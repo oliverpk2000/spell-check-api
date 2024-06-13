@@ -1,3 +1,7 @@
+mod spell_check;
+
+use std::fs::File;
+use std::io::{BufRead, BufReader};
 use axum::extract::Path;
 use axum::{routing::get, Json, Router};
 
@@ -13,6 +17,16 @@ async fn main() {
 }
 
 async fn get_corrected_words(Path(arg): Path<String>) -> Json<Vec<String>> {
-    let correct_words = vec![arg, "test".parse().unwrap(), "test2".parse().unwrap()];
+    let words = load_word_vec("src/wordlists/english.txt");
+    //println!("{:?}", words);
+    let correct_words = vec![];
     Json(correct_words)
+}
+
+fn load_word_vec(filename: impl AsRef<std::path::Path>) -> Vec<String>{
+    let file = File::open(filename).expect("no such file");
+    let buf = BufReader::new(file);
+    buf.lines()
+        .map(|l| l.expect("Could not parse line"))
+        .collect()
 }
