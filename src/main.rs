@@ -1,9 +1,9 @@
 mod spell_check;
 
-use std::fs::File;
-use std::io::{BufRead, BufReader};
 use axum::extract::Path;
 use axum::{routing::get, Json, Router};
+use std::fs::File;
+use std::io::{BufRead, BufReader};
 
 #[tokio::main]
 async fn main() {
@@ -18,12 +18,12 @@ async fn main() {
 
 async fn get_corrected_words(Path(arg): Path<String>) -> Json<Vec<String>> {
     let words = load_word_vec("src/wordlists/english.txt");
-    //println!("{:?}", words);
-    let correct_words = vec![];
+    let best_match = spell_check::auto_correct(&arg, words);
+    let correct_words = best_match;
     Json(correct_words)
 }
 
-fn load_word_vec(filename: impl AsRef<std::path::Path>) -> Vec<String>{
+fn load_word_vec(filename: impl AsRef<std::path::Path>) -> Vec<String> {
     let file = File::open(filename).expect("no such file");
     let buf = BufReader::new(file);
     buf.lines()

@@ -8162,7 +8162,7 @@ silk
 silly
 silver
 sim
-similar
+Similar
 similarly
 simon
 simple
