@@ -7,6 +7,8 @@ use std::io::{BufRead, BufReader};
 
 #[tokio::main]
 async fn main() {
+    println!("running on 0.0.0.0:3000/");
+
     let app = Router::new()
         .route("/", get(|| async { "the api is at /words/:word" }))
         .route("/words/:word", get(get_corrected_words));
