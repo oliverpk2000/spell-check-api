@@ -17,7 +17,7 @@ async fn main() {
 
     let app = Router::new()
         .route("/", get(|| async { "the api is at /words/:word" }))
-        .route("/", get(|| async {"you need an argument after the route as well (/:word)"}))
+        .route("/words", get(|| async {"you need an argument after the route as well (/:word)"}))
         .route("/words/:word", get(get_corrected_words))
         .layer(cors);
 
