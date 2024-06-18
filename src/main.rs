@@ -4,14 +4,22 @@ use axum::extract::Path;
 use axum::{routing::get, Json, Router};
 use std::fs::File;
 use std::io::{BufRead, BufReader};
+use tower_http::cors::{Any, CorsLayer};
+use axum::http::Method;
 
 #[tokio::main]
 async fn main() {
     println!("running on 0.0.0.0:3000/");
 
+    let cors = CorsLayer::new()
+        .allow_methods([Method::GET, Method::POST])
+        .allow_origin(Any);
+
     let app = Router::new()
         .route("/", get(|| async { "the api is at /words/:word" }))
-        .route("/words/:word", get(get_corrected_words));
+        .route("/", get(|| async {"you need an argument after the route as well (/:word)"}))
+        .route("/words/:word", get(get_corrected_words))
+        .layer(cors);
 
     // run our app with hyper, listening globally on port 3000
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
