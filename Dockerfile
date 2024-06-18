@@ -1,9 +1,9 @@
 FROM rust:latest as builder
 WORKDIR /app
 COPY . .
-CMD ["cargo", "build", "--release"]
+RUN cargo build --release
 
-FROM rust:latest
+FROM ubuntu:latest
 WORKDIR /app
-COPY --from=builder /app /app
-CMD ["cargo","run","--release"]
+COPY --from=builder /app/target/release/spell-check-api .
+CMD ["./spell-check-api"]
