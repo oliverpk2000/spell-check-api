@@ -27,7 +27,7 @@ async fn main() {
 }
 
 async fn get_corrected_words(Path(arg): Path<String>) -> Json<Vec<String>> {
-    let words = load_word_vec("src/wordlists/english.txt");
+    let words = load_word_vec("rsrc/english.txt");
     let best_match = spell_check::auto_correct(&arg, words);
     let correct_words = best_match;
     Json(correct_words)
